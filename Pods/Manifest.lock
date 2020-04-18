@@ -1,0 +1,20 @@
+PODS:
+  - BottomPopup (0.6.0)
+  - IQKeyboardManagerSwift (6.5.5)
+
+DEPENDENCIES:
+  - BottomPopup
+  - IQKeyboardManagerSwift
+
+SPEC REPOS:
+  trunk:
+    - BottomPopup
+    - IQKeyboardManagerSwift
+
+SPEC CHECKSUMS:
+  BottomPopup: 1d5649a3b29396238f0e8f3c82075a7bfcf37ba7
+  IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
+
+PODFILE CHECKSUM: 13c8d0a39f9a85ca97f50abb2a8757db02cbcdae
+
+COCOAPODS: 1.9.1
