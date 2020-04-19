@@ -7,14 +7,17 @@
 //
 
 import UIKit
-import BottomPopup
 class TodoListViewController: UITableViewController, TodoDelegate {
   
+    let data = UserDefaults.standard
 
-    var dataSource = ["Mohaned","in da","House"]
+    var dataSource:[TodoItem] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let  safeData = data.object(forKey: K.dataKey){
+            let decodedItems = NSKeyedUnarchiver.unarchivedObject(ofClass: TodoItem, from: safeData)
+            dataSource = decodedItems
+        }
         
     }
     
@@ -24,7 +27,7 @@ class TodoListViewController: UITableViewController, TodoDelegate {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier,for: indexPath)
-        cell.textLabel?.text = dataSource[indexPath.row]
+        cell.textLabel?.text = dataSource[indexPath.row].text
    
         return cell
     }
@@ -34,7 +37,7 @@ class TodoListViewController: UITableViewController, TodoDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell =  tableView.cellForRow(at: indexPath)
        
-        if cell?.accessoryType == UITableViewCell.AccessoryType.none{
+        if dataSource[indexPath.row].isChecked{
              cell?.accessoryType = .checkmark
         }else{
             cell?.accessoryType = .none
@@ -46,46 +49,25 @@ class TodoListViewController: UITableViewController, TodoDelegate {
     
     @IBAction func onAddButtonPressed(_ sender: Any) {
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: K.popUpVC) as? BottomSheetViewController else { return }
-        popVC.popupDelegate = self
         popVC.delegate = self
         present(popVC, animated: false, completion: nil)
         
     }
     
-    func todoItemIsAdded(text: String) {
-        dataSource.append(text)
+    func todoItemIsAdded(item: TodoItem) {
+        do{
+        dataSource.append(item)
+        let encodedData = try NSKeyedArchiver.archivedData(withRootObject: dataSource, requiringSecureCoding: false)
+        data.set(encodedData, forKey: K.dataKey)
         tableView.reloadData()
-      }
+        }catch{
+            print(error)
+        }
+        }
       
     
     
   
 
-}
-extension TodoListViewController: BottomPopupDelegate {
-    
-    func bottomPopupViewLoaded() {
-        print("bottomPopupViewLoaded")
-    }
-    
-    func bottomPopupWillAppear() {
-        print("bottomPopupWillAppear")
-    }
-    
-    func bottomPopupDidAppear() {
-        print("bottomPopupDidAppear")
-    }
-    
-    func bottomPopupWillDismiss() {
-        print("bottomPopupWillDismiss")
-    }
-    
-    func bottomPopupDidDismiss() {
-        print("bottomPopupDidDismiss")
-    }
-    
-    func bottomPopupDismissInteractionPercentChanged(from oldValue: CGFloat, to newValue: CGFloat) {
-        print("bottomPopupDismissInteractionPercentChanged fromValue: \(oldValue) to: \(newValue)")
-    }
 }
 

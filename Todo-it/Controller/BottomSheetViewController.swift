@@ -36,7 +36,7 @@ class BottomSheetViewController: BottomPopupViewController{
     
     @IBAction func onAddPressed(_ sender: UIButton) {
         if todoTextField.text != "" {
-            delegate?.todoItemIsAdded(text: todoTextField.text!)
+            delegate?.todoItemIsAdded(item: TodoItem(text: todoTextField.text!))
             todoTextField.text = ""
                 dismiss(animated: true, completion: nil)
         }
@@ -47,5 +47,5 @@ class BottomSheetViewController: BottomPopupViewController{
 //MARK: - This Protocol to pass data back
 
 protocol TodoDelegate {
-    func todoItemIsAdded(text:String)
+    func todoItemIsAdded(item: TodoItem)
 }
