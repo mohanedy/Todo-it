@@ -12,8 +12,15 @@ import BottomPopup
 class BottomSheetViewController: BottomPopupViewController{
     
     @IBOutlet weak var todoTextField: UITextField!
-    var delegate:TodoDelegate?
+    var delegate:BottomSheetDelegate?
+    var type:EntryType = .item
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if type == .category {
+            todoTextField.placeholder = "Enter Category"
+        }
+    }
     @IBAction func dismissButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -36,9 +43,9 @@ class BottomSheetViewController: BottomPopupViewController{
     
     @IBAction func onAddPressed(_ sender: UIButton) {
         if todoTextField.text != "" {
-            delegate?.todoItemIsAdded(item: TodoItem(text: todoTextField.text!))
+            delegate?.itemIsAdded(text: todoTextField.text!)
             todoTextField.text = ""
-                dismiss(animated: true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         
     }
@@ -46,6 +53,12 @@ class BottomSheetViewController: BottomPopupViewController{
 }
 //MARK: - This Protocol to pass data back
 
-protocol TodoDelegate {
-    func todoItemIsAdded(item: TodoItem)
+protocol BottomSheetDelegate {
+    func itemIsAdded(text: String)
+}
+
+//MARK: - This Enum to identify between Category and Item
+enum EntryType{
+    case item
+    case category
 }

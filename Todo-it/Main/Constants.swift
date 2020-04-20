@@ -11,4 +11,6 @@ struct K {
     static let cellIdentifier = "ToDoItemCell"
     static let popUpVC = "PopUpVC"
     static let dataKey = "todoListItems"
+    static let categoryCellIdentifier = "CategoryCell"
+    static let itemsListSegue = "itemsListSegue"
 }
