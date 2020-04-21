@@ -20,9 +20,9 @@ class CategoryTableViewController: UITableViewController {
     }
     
     
-    
+    //MARK: - Table Delegate Tables
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        
         return categoryList.count
     }
     
@@ -34,6 +34,11 @@ class CategoryTableViewController: UITableViewController {
         
         return cell
     }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: K.itemsListSegue, sender: self)
+        
+    }
     
     @IBAction func onAddCategoryPressed(_ sender: UIButton) {
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: K.popUpVC) as? BottomSheetViewController else { return }
@@ -41,6 +46,20 @@ class CategoryTableViewController: UITableViewController {
         popVC.delegate = self
         present(popVC, animated: false, completion: nil)
     }
+    
+    
+    //MARK: - Segue Methods
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == K.itemsListSegue{
+            let destinationVC = segue.destination as! TodoListViewController
+            if let indexPath = tableView.indexPathForSelectedRow{
+                destinationVC.selectedCategory = categoryList[indexPath.row]
+            }
+            
+        }
+    }
+    
     //MARK: - Saves data to the CoreData
     func saveData(){
         do{

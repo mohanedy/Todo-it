@@ -13,4 +13,8 @@ struct K {
     static let dataKey = "todoListItems"
     static let categoryCellIdentifier = "CategoryCell"
     static let itemsListSegue = "itemsListSegue"
+    
+    struct CoreData {
+        static let parentRelation = "parentCategory"
+    }
 }

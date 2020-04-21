@@ -12,12 +12,16 @@ class TodoListViewController: UITableViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var dataSource:[TodoItem] = []
+    var selectedCategory:TodoCategory?{
+        didSet{
+            loadData(predicate: nil)
+        }
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadData()
+        self.title = "\(selectedCategory!.name!) List"
         
     }
     
@@ -80,15 +84,23 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK: - Load data from core data
-
-    func loadData(with request:NSFetchRequest<TodoItem> = TodoItem.fetchRequest()) {
+    
+    func loadData(with request:NSFetchRequest<TodoItem> = TodoItem.fetchRequest(),predicate:NSPredicate? = nil) {
+        let categoryPredicate = NSPredicate(format: "\(K.CoreData.parentRelation).name MATCHES %@", selectedCategory!.name!)
+        if let safePredicate = predicate {
+            let compoundPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate,safePredicate])
+            request.predicate = compoundPredicates
+        }else{
+            request.predicate = categoryPredicate
+        }
+        
         do{
             
             dataSource =  try context.fetch(request)
         }catch{
             print("Error Fetching the data \(error)")
         }
-          tableView.reloadData()
+        tableView.reloadData()
     }
     
 }
@@ -102,15 +114,16 @@ extension TodoListViewController : UISearchBarDelegate{
         let request:NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "text", ascending: true)]
         if (searchText != ""){
-            request.predicate =  NSPredicate(format: "text CONTAINS[cd] %@", searchText)
-            
+            let predicate =  NSPredicate(format: "text CONTAINS[cd] %@", searchText)
+            loadData(with: request,predicate: predicate)
         }else{
             DispatchQueue.main.async {
-                 searchBar.resignFirstResponder()
+                searchBar.resignFirstResponder()
             }
+            loadData()
         }
-        loadData(with: request)
-      
+        
+        
     }
 }
 
@@ -120,9 +133,10 @@ extension TodoListViewController : UISearchBarDelegate{
 extension TodoListViewController : BottomSheetDelegate{
     
     func itemIsAdded(text: String) {
-
+        
         let item = TodoItem(context: context)
         item.text = text
+        item.parentCategory =  selectedCategory!
         dataSource.append(item)
         saveData()
     }
