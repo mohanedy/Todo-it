@@ -13,9 +13,9 @@ A simple todo list app built in swift for showcasing my iOS development skills t
 <img src="https://i.imgur.com/Pvqd07K.gif" alt="Showcase" >
 </p>
 
-## Used in this project
+## Uses
 
-- [x] OOP
+- [x] OOP Concepts
 - [x] Delegate Design Pattern
 - [x] CoreData (Data Types, Relations, Concepts ..)(Core data version is available on CoreDataVersion Branch)
 - [x] Realme (Realm version is available on RealmVersion Branch)
