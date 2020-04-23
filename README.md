@@ -10,7 +10,7 @@ A simple todo list app built in swift for showcasing my iOS development skills t
 <img src="https://i.imgur.com/RPV9ltj.png" alt="App Icon" width="300" height="300">
 </p>
 <p align="center">
-<img src="https://i.imgur.com/Pvqd07K.gif" alt="Showcase" width="500" height="500">
+<img src="https://i.imgur.com/Pvqd07K.gif" alt="Showcase" >
 </p>
 
 ## Concepts covered in this project
