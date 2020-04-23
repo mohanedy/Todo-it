@@ -6,10 +6,12 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 A simple todo list app built in swift for showcasing my iOS development skills that I have learned and what I am capable to do using swift.
-
-<img src="https://i.imgur.com/RPV9ltj.png" alt="App Icon" class="avatar">
-
-
+<p align="center">
+<img src="https://i.imgur.com/RPV9ltj.png" alt="App Icon" width="300" height="300">
+</p>
+<p align="center">
+<img src="https://i.imgur.com/RPV9ltj.png" alt="Showcase" width="500" height="700">
+</p>
 ## Concepts covered in this project
 
 - [x] Feature 1
