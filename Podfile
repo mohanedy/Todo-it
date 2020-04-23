@@ -8,5 +8,6 @@ target 'Todo-it' do
   # Pods for Todo-it
   pod 'BottomPopup'
   pod 'IQKeyboardManagerSwift'
+  pod 'MaterialComponents', '~> 109.0'
 
 end
