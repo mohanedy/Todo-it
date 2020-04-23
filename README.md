@@ -18,7 +18,7 @@ A simple todo list app built in swift for showcasing my iOS development skills t
 - [x] OOP Concepts
 - [x] Delegate Design Pattern
 - [x] CoreData (Data Types, Relations, Concepts ..)(Core data version is available on CoreDataVersion Branch)
-- [x] Realme (Realm version is available on RealmVersion Branch)
+- [x] Realme (Realm version is available on master branch)
 - [x] UserDefaults
 - [x] [MaterialComponents](https://cocoapods.org/pods/MaterialComponents)
 
