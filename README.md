@@ -5,7 +5,7 @@
 [![License][license-image]][license-url]
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-A simple todo list app built in swift for showcasing my iOS development skills that I have learned and what I am capable to do using swift.
+A simple todo list app built in swift for showcasing my iOS development skills that I have learned and what I am capable to do.
 <p align="center">
 <img src="https://i.imgur.com/RPV9ltj.png" alt="App Icon" width="300" height="300">
 </p>
@@ -13,13 +13,14 @@ A simple todo list app built in swift for showcasing my iOS development skills t
 <img src="https://i.imgur.com/Pvqd07K.gif" alt="Showcase" >
 </p>
 
-## Concepts covered in this project
+## Used in this project
 
-- [x] Feature 1
-- [x] Feature 2
-- [x] Feature 3
-- [x] Feature 4
-- [x] Feature 5
+- [x] OOP
+- [x] Delegate Design Pattern
+- [x] CoreData (Data Types, Relations, Concepts ..)(Core data version is available on CoreDataVersion Branch)
+- [x] Realme (Realm version is available on RealmVersion Branch)
+- [x] UserDefaults
+- [x] [MaterialComponents](https://cocoapods.org/pods/MaterialComponents)
 
 ## Requirements
 
@@ -28,11 +29,9 @@ A simple todo list app built in swift for showcasing my iOS development skills t
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Mohaned Yossry – [@mohanedy98](https://twitter.com/mohanedy98) – mohaned.y98@gmail.com
 
-Distributed under the XYZ license. See ``LICENSE`` for more information.
-
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+[Mohanedy98](https://github.com/Mohanedy98)
 
 [swift-image]:https://img.shields.io/badge/swift-5.0-red.svg
 [swift-url]: https://swift.org/
