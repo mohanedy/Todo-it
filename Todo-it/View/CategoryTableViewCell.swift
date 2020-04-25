@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MaterialComponents
 import ChameleonFramework
 import SwipeCellKit
 class CategoryTableViewCell: SwipeTableViewCell {

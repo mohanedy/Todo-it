@@ -7,7 +7,6 @@ target 'Todo-it' do
   # Pods for Todo-it
   pod 'BottomPopup'
   pod 'IQKeyboardManagerSwift'
-  pod 'MaterialComponents', '~> 109.0'
   pod 'RealmSwift'
   pod 'ChameleonFramework/Swift', :git => 'https://github.com/wowansm/Chameleon', :branch => 'swift5'
   pod 'SwipeCellKit'
