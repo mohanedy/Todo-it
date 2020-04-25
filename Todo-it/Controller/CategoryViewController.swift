@@ -35,6 +35,9 @@ class CategoryViewController: SwipeCellViewController, UITableViewDelegate, UITa
         token?.invalidate()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
     
     //MARK: - Delete Functionality
     
