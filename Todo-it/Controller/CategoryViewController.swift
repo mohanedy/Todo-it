@@ -7,44 +7,45 @@
 //
 
 import UIKit
-import CoreData
-
+import RealmSwift
+import UIColor_Hex_Swift
 class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let realm = try! Realm()
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var categoryList:[TodoCategory] = []
+    
+    var categoryList:Results<TodoCategory>?
+    
+    var token:NotificationToken?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadData()
         
-        
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
-       
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.categoryCellIdentifier)
-    }
-    
-    //MARK: - This method listen for changes in the CoreData context
-    @objc func managedObjectContextObjectsDidChange(notification: NSNotification){
-       numberLabel.text = "You have \(categoryList.count) categories"
+         token = categoryList?.observe {  change  in
+            self.numberLabel.text = "You have \(self.categoryList?.count ?? 0) categories"
+        }
     }
     
 
+    deinit {
+                token?.invalidate()
+
+    }
     //MARK: - Table Delegate Tables
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return categoryList.count
+        return categoryList?.count ?? 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.categoryCellIdentifier, for: indexPath) as! CategoryTableViewCell
         
-        cell.categoryItem = categoryList[indexPath.row]
+        cell.categoryItem = categoryList?[indexPath.row]
         
         return cell
     }
@@ -68,18 +69,18 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         if segue.identifier == K.itemsListSegue{
             let destinationVC = segue.destination as! TodoViewController
             if let indexPath = tableView.indexPathForSelectedRow{
-                destinationVC.selectedCategory = categoryList[indexPath.row]
+                destinationVC.selectedCategory = categoryList?[indexPath.row]
             }
             
         }
     }
     
     //MARK: - Saves data to the CoreData
-    func saveData(){
+    func saveData(category:TodoCategory){
         do{
-            
-            try context.save()
-            
+            try realm.write{
+                realm.add(category)
+            }
         }catch{
             print(error)
         }
@@ -87,27 +88,21 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func loadData(with request : NSFetchRequest<TodoCategory> = TodoCategory.fetchRequest()) {
-        do{
-            
-            categoryList =  try context.fetch(request)
-        }catch{
-            print("Error Fetching the data \(error)")
-        }
+    func loadData() {
+         categoryList = realm.objects(TodoCategory.self)
+        
         tableView.reloadData()
-        numberLabel.text = "You have \(categoryList.count) categories"
+        numberLabel.text = "You have \(categoryList?.count ?? 0) categories"
     }
     
 }
 extension CategoryViewController :  BottomSheetDelegate{
     func itemIsAdded(text: String) {
-        let category = TodoCategory(context: context)
+        let category = TodoCategory()
         category.name = text
-        category.color = UIColor.random
-        categoryList.append(category)
-        saveData()
+        category.color = UIColor.random.hexString()
+        saveData(category: category)
         
     }
-    
     
 }

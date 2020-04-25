@@ -8,6 +8,7 @@
 
 import UIKit
 import MaterialComponents
+import UIColor_Hex_Swift
 class CategoryTableViewCell: UITableViewCell {
 
     
@@ -33,8 +34,11 @@ class CategoryTableViewCell: UITableViewCell {
          cardView.setShadowColor(UIColor.black, for: .highlighted)
     }
     func setCategory() {
-        categoryLabel.text = categoryItem?.name
-        circleView.layer.borderColor = categoryItem?.color?.cgColor
+      
+            categoryLabel.text = categoryItem?.name
+            circleView.layer.borderColor = UIColor(categoryItem?.color ?? "#FFCC00DD").cgColor
+        
+    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -1,5 +1,4 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
 
 target 'Todo-it' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -9,5 +8,7 @@ target 'Todo-it' do
   pod 'BottomPopup'
   pod 'IQKeyboardManagerSwift'
   pod 'MaterialComponents', '~> 109.0'
+  pod 'RealmSwift'
+  pod 'UIColor_Hex_Swift'
 
 end

@@ -608,11 +608,19 @@ PODS:
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
+  - Realm (4.4.1):
+    - Realm/Headers (= 4.4.1)
+  - Realm/Headers (4.4.1)
+  - RealmSwift (4.4.1):
+    - Realm (= 4.4.1)
+  - UIColor_Hex_Swift (5.1.0)
 
 DEPENDENCIES:
   - BottomPopup
   - IQKeyboardManagerSwift
   - MaterialComponents (~> 109.0)
+  - RealmSwift
+  - UIColor_Hex_Swift
 
 SPEC REPOS:
   trunk:
@@ -623,6 +631,9 @@ SPEC REPOS:
     - MDFTextAccessibility
     - MotionAnimator
     - MotionInterchange
+    - Realm
+    - RealmSwift
+    - UIColor_Hex_Swift
 
 SPEC CHECKSUMS:
   BottomPopup: 1d5649a3b29396238f0e8f3c82075a7bfcf37ba7
@@ -632,7 +643,10 @@ SPEC CHECKSUMS:
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
+  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
+  RealmSwift: 3eb8924ff7100df5928c7602f71d0fec51e7c9c5
+  UIColor_Hex_Swift: 8be7432edacb7fa91c78aa05ef3c30b66e4f9415
 
-PODFILE CHECKSUM: 949eb582f6bb862fbb434e4f79ea7a81de76025a
+PODFILE CHECKSUM: 15a60c42a1a596afe1dc174808ca06f0d3159f85
 
 COCOAPODS: 1.9.1
