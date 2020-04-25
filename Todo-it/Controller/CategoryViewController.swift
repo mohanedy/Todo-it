@@ -8,8 +8,8 @@
 
 import UIKit
 import RealmSwift
-import UIColor_Hex_Swift
-class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+import ChameleonFramework
+class CategoryViewController: SwipeCellViewController, UITableViewDelegate, UITableViewDataSource {
     
     let realm = try! Realm()
     @IBOutlet weak var numberLabel: UILabel!
@@ -25,17 +25,33 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         loadData()
         
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.categoryCellIdentifier)
-         token = categoryList?.observe {  change  in
+        token = categoryList?.observe {  change  in
             self.numberLabel.text = "You have \(self.categoryList?.count ?? 0) categories"
         }
     }
     
-
+    
     deinit {
-                token?.invalidate()
-
+        token?.invalidate()
+        
     }
-    //MARK: - Table Delegate Tables
+    
+    //MARK: - Delete Functionality
+    
+    override func deleteCell(at indexPath:IndexPath){
+        if let item = self.categoryList?[indexPath.row]{
+            do {
+                try self.realm.write{
+                    self.realm.delete(item)
+                }
+            } catch  {
+                print(error)
+            }
+            
+        }
+    }
+    
+    //MARK: - Table Delegate Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return categoryList?.count ?? 0
@@ -46,12 +62,15 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: K.categoryCellIdentifier, for: indexPath) as! CategoryTableViewCell
         
         cell.categoryItem = categoryList?[indexPath.row]
+        cell.delegate = self
         
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         performSegue(withIdentifier: K.itemsListSegue, sender: self)
+         tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
@@ -89,7 +108,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadData() {
-         categoryList = realm.objects(TodoCategory.self)
+        categoryList = realm.objects(TodoCategory.self)
         
         tableView.reloadData()
         numberLabel.text = "You have \(categoryList?.count ?? 0) categories"
@@ -100,9 +119,10 @@ extension CategoryViewController :  BottomSheetDelegate{
     func itemIsAdded(text: String) {
         let category = TodoCategory()
         category.name = text
-        category.color = UIColor.random.hexString()
+        category.color = UIColor.random.hexValue()
         saveData(category: category)
         
     }
     
 }
+

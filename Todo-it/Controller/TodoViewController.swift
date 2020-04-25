@@ -8,7 +8,9 @@
 
 import UIKit
 import RealmSwift
-class TodoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+import SwipeCellKit
+import ChameleonFramework
+class TodoViewController: SwipeCellViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -19,18 +21,24 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
     var itemsResults: Results<TodoItem>?
     var selectedCategory:TodoCategory?
     let realm = try! Realm()
-    
+    var token:NotificationToken?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-                titleLabel.text = "\(selectedCategory?.name ?? "")"
-        loadData()
         
+        titleLabel.text = "\(selectedCategory?.name ?? "")"
+        loadData()
+        token = itemsResults?.observe({ (change) in
+            self.itemsCountLabel.text = "You have \(self.itemsResults?.count ?? 0) tasks"
+            self.tableView.reloadData()
+        })
+        tableView.rowHeight = 80.0
         
     }
-    
+    deinit {
+        token?.invalidate()
+    }
     
     //MARK: - TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -38,28 +46,69 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier,for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier,for: indexPath) as! SwipeTableViewCell
+        cell.delegate = self
         if let item = itemsResults?[indexPath.row]{
+            
             cell.textLabel?.text = item.text
+            
             cell.accessoryType =  item.isDone ? .checkmark : .none
+            cell.textLabel?.textColor = .white
+//            let formater = DateFormatter()
+//            formater.dateFormat = "dd/MM/yy HH:mm"
+//            let date =  formater.string(from: item.creationDate)
+//            cell.detailTextLabel?.text = date
+            
+            let categoryColor = UIColor(hexString: selectedCategory!.color)
+            if let bgColor = categoryColor?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(itemsResults!.count)){
+                cell.backgroundColor = bgColor
+                cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: bgColor, isFlat: true)
+                cell.accessoryView?.tintColor = UIColor(contrastingBlackOrWhiteColorOn: bgColor, isFlat: true)
+            }
+            
+            
+            
         }else{
             cell.textLabel?.text = "No Items Available"
         }
         
         
-        
-        
-        
         return cell
     }
+    
+    
+    //MARK: - Delete Functionality
+    
+    override func deleteCell(at indexPath:IndexPath){
+        if let item = self.itemsResults?[indexPath.row]{
+            do {
+                try self.realm.write{
+                    self.realm.delete(item)
+                }
+            } catch  {
+                print(error)
+            }
+            
+        }
+    }
+    
+    
     
     //MARK: - TableView Delegate Methods
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //        itemsResults?[indexPath.row].isDone = !(itemsResults?[indexPath.row].isDone ?? true)
-        //        saveData()
-        
+        if let item = itemsResults?[indexPath.row]{
+            do {
+                try realm.write{
+                    item.isDone = !item.isDone
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -73,22 +122,13 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    //MARK: - Swipe to delete
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            //              context.delete(dataSource[indexPath.row])
-            //            itemsResults.remove(at: indexPath.row)
-            //            saveData()
-        }
-    }
     
     
     
     //MARK: - Load data from core data
     
     func loadData() {
-        itemsResults = selectedCategory?.todoItems.sorted(byKeyPath: "text", ascending: true)
+        itemsResults = selectedCategory?.todoItems.sorted(byKeyPath: "creationDate", ascending: true)
         tableView.reloadData()
         itemsCountLabel.text = "You have \(itemsResults?.count ?? 0) tasks"
         
@@ -105,16 +145,17 @@ extension TodoViewController : UISearchBarDelegate{
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        //        request.sortDescriptors = [NSSortDescriptor(key: "text", ascending: true)]
-        //        if (searchText != ""){
-        //            let predicate =  NSPredicate(format: "text CONTAINS[cd] %@", searchText)
-        //            loadData(with: request,predicate: predicate)
-        //        }else{
-        //            DispatchQueue.main.async {
-        //                searchBar.resignFirstResponder()
-        //            }
-        //            loadData()
-        //        }
+        if (searchText != ""){
+            let predicate =  NSPredicate(format: "text CONTAINS[cd] %@", searchText)
+            itemsResults = itemsResults?.filter(predicate).sorted(byKeyPath: "creationDate", ascending: true)
+            
+        }else{
+            itemsResults = selectedCategory?.todoItems.sorted(byKeyPath: "creationDate", ascending: true)
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+        tableView.reloadData()
         
         
     }
@@ -139,7 +180,7 @@ extension TodoViewController : BottomSheetDelegate{
             }catch{
                 print(error)
             }
-            tableView.reloadData()
         }
     }
 }
+

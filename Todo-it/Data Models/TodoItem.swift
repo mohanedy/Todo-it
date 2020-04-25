@@ -12,6 +12,7 @@ import RealmSwift
 class TodoItem: Object {
     @objc dynamic var text: String = ""
     @objc dynamic var isDone: Bool = false
+    @objc dynamic var creationDate:Date = Date()
     let parentCategory = LinkingObjects(fromType: TodoCategory.self, property: "todoItems")
     
 }

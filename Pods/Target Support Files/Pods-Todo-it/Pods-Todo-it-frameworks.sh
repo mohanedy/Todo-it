@@ -198,6 +198,7 @@ fi
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/BottomPopup/BottomPopup.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework"
@@ -206,10 +207,11 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Realm/Realm.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/BottomPopup/BottomPopup.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework"
@@ -218,7 +220,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Realm/Realm.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
