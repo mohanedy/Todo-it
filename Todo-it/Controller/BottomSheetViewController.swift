@@ -18,7 +18,7 @@ class BottomSheetViewController: BottomPopupViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         if type == .category {
-            todoTextField.placeholder = "Enter Category"
+            todoTextField.placeholder = "Add new category"
         }
     }
     @IBAction func dismissButtonTapped(_ sender: UIButton) {
